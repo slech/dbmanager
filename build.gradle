@@ -1,0 +1,40 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group = 'de.slech.dbmanager'
+version = '0.1.0'
+
+description = "Fluent API in order to write test data into a database."
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'org.eclipse.persistence', name: 'javax.persistence', version: '2.1.0'
+}
+
+jar {
+    def implBuild = new Date().format('dd.MM.yyyy HH:mm')
+    exclude 'reports/*'
+    exclude 'labels/*'
+    includeEmptyDirs = false
+    manifest {
+        attributes 'Implementation-Build': implBuild,
+                'Implementation-Version': version,
+                'Implementation-Vendor-Id': 'Stefan Lechner',
+                'Implementation-Title': 'dbmanger'
+    }
+}
+
+

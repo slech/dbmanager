@@ -32,7 +32,7 @@ Creating the interface
 ----------------------
 In order to describe this table we have to create the following interface
 ```Java
-import de.slech.dbmanager.TableManager;
+import de.slech.dbmanager.core.TableManager;
 
 public interface User extends TableManager<User> {
     User id(int id);
@@ -48,7 +48,7 @@ The interface must extend *TableManager* with itself as type parameter. The name
 
 You can also use annotations to define table or column names:
 ```Java
-import de.slech.dbmanager.TableManager;
+import de.slech.dbmanager.core.TableManager;
 import javax.persistence.Table;
 import javax.persistence.Column;
 
@@ -75,9 +75,9 @@ public enum UserType {
 ```
 We can use a converter in order to use the enum in our interface:
 ```Java
-import de.slech.dbmanager.TableManager;
-import de.slech.dbmanager.EnumToNameConverter;
-import javax.persistence.Convert
+import de.slech.dbmanager.core.TableManager;
+import de.slech.dbmanager.converter.EnumToNameConverter;
+import javax.persistence.Convert;
 
 public interface User extends TableManager<User> {
     User id(int id);
@@ -93,7 +93,7 @@ public interface User extends TableManager<User> {
 Writing data into the table
 ---------------------------
 Now we are going to write some test data into our table *user*.
-```Java
+```Java 
 final DataSource dataSource = createDatasource(); // a datasource is needed 
 final DatabaseManager dbm = new DatabaseManager(dataSource);
 dbm.createTableManager(IUser.class)
@@ -103,7 +103,7 @@ dbm.createTableManager(IUser.class)
             .fname("Fritz").lname("Huber").login("fritzhuber").password("****")
         .andRow()
             .fname("Franz").lname("Meier").login("franzmeier")
-        .executeStatement();
+        .executeStatement();       
 ```
 The line `generateValuesFor().id(1)` achieves that the values for the column id are a sequence of numbers starting at 1.
 And the line `setDefaultValues().active(true).usertype("admin")` causes that in all rows the values of the columns *active* and 

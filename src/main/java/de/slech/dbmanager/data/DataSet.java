@@ -1,6 +1,8 @@
 package de.slech.dbmanager.data;
 
 
+import de.slech.dbmanager.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +33,7 @@ public class DataSet {
 
     @Override
     public String toString() {
-        return de.slech.dbmanager.util.StringUtils.concatStrings(stream().map(Row::toString).collect(Collectors.toList()), "\n");
+        return StringUtils.concatStrings(stream().map(Row::toString).collect(Collectors.toList()), "\n");
     }
 
     public boolean isEmpty() {

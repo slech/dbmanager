@@ -5,7 +5,7 @@ import de.slech.dbmanager.converter.EnumToNameConverter;
 import de.slech.dbmanager.data.DataSet;
 import de.slech.dbmanager.data.Row;
 import de.slech.dbmanager.util.StringUtils;
-import de.slech.dbmanager.util.SystemException;
+import de.slech.dbmanager.exeption.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,7 @@
 package de.slech.dbmanager.core;
 
 import de.slech.dbmanager.util.StringUtils;
-import de.slech.dbmanager.util.SystemException;
+import de.slech.dbmanager.exeption.SystemException;
 import de.slech.dbmanager.data.DataSet;
 import de.slech.dbmanager.data.Row;
 import org.slf4j.Logger;

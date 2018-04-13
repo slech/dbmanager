@@ -29,7 +29,7 @@ create table user (
 ```
 
 Creating the interface
------------------------------
+----------------------
 In order to describe this table we have to create the following interface
 ```Java
 import de.slech.dbmanager.TableManager;
@@ -44,8 +44,7 @@ public interface User extends TableManager<User> {
     User active(boolean active);
 }
 ```
-The name of the interface is the table name, and the names of the methods are the column names. All methods must return the 
-interface itself.
+The interface must extend *TableManager* with itself as type parameter. The name of the interface has to be the table name, and the names of the methods have to be the column names. All methods must return the interface itself.
 
 You can also use annotations to define table or column names:
 ```Java
@@ -91,7 +90,9 @@ public interface User extends TableManager<User> {
     User active(boolean active);
 }
 ```
-Writing test data to the table
+Writing data into the table
+---------------------------
+Now we are going to write some test data into our table *user*.
 ```Java
 final DataSource dataSource = createDatasource(); // a datasource is needed 
 final DatabaseManager dbm = new DatabaseManager(dataSource);
@@ -105,9 +106,9 @@ dbm.createTableManager(IUser.class)
         .executeStatement();
 ```
 The line `generateValuesFor().id(1)` achieves that the values for the column id are a sequence of numbers starting at 1.
-The line `setDefaultValues().active(true).usertype("admin")` causes that in all rows the values of the columns *active* and 
+And the line `setDefaultValues().active(true).usertype("admin")` causes that in all rows the values of the columns *active* and 
 usertype are *true* and *admin*, respectively.
-With `newInsertStatementWithRow()` we start our first row, `andRow()` starts the second row and .executeStatement() executes the 
+With `newInsertStatementWithRow()` we start our first row, `andRow()` starts the second row and `executeStatement()` executes the 
 insert statement with the two rows.
 This code creates the following content of table *user*:
 

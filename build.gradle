@@ -1,7 +1,8 @@
 apply plugin: 'java'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
-group = 'de.slech.dbmanager'
+group = 'com.github.slech.dbmanager'
 version = '0.1.0'
 
 description = "Fluent API in order to write test data into a database."
@@ -37,4 +38,66 @@ jar {
     }
 }
 
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
 
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name '${project.groupId}:${project.artifactId}'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'java library to create database test data'
+                url 'https://github.com/slech/dbmanager'
+
+                scm {
+                    connection 'scm:git:https://github.com/slech/dbmanager.git'
+                    developerConnection 'scm:git:https://github.com/slech/dbmanager.git'
+                    url 'https://github.com/slech/dbmanager'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'slech'
+                        name 'Stefan Lechner'
+                        email 'slech@freenet.de'
+                    }
+                }
+            }
+        }
+    }
+}

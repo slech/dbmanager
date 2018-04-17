@@ -116,3 +116,19 @@ id |lastname|firstname|login|password|usertype|active
 ---|--------|---------|-----|--------|--------|------
 1  |Huber		|Fritz    |fritzhuber|****|admin  |1
 2  |Meier   |Franz    |franzmeier|NULL|admin  |1
+
+
+Download
+--------
+Maven : 
+```xml
+<dependency>
+    <groupId>com.github.slech.dbmanager</groupId>
+    <artifactId>dbmanager</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
+Gradle:
+```groovy
+compile group: 'com.github.slech.dbmanager', name: 'dbmanager', version: '0.1.0'
+```

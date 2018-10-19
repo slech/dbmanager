@@ -38,6 +38,10 @@ jar {
     }
 }
 
+javadoc {
+    options.addStringOption('charset', 'UTF-8')
+}
+
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc

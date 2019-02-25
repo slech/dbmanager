@@ -34,6 +34,7 @@ class JdbcHelper {
         executeUpdate(Collections.singletonList(sqlStatement));
     }
 
+
     DataSet executeQuery(String tableName, Collection<String> searchedColumns, Map<String, Object> columnConditions) {
         final ArrayList<Map.Entry<String, Object>> columns = new ArrayList<>(columnConditions.entrySet());
         String sqlString = String.format("select %s from %s where %s",
@@ -44,21 +45,37 @@ class JdbcHelper {
         try(Connection connection = dataSource.getConnection();
             PreparedStatement sqlStmt = connection.prepareStatement(sqlString)) {
             setParameters(sqlStmt, columns);
-            final ResultSet resultSet = sqlStmt.executeQuery();
-            DataSet result = new DataSet();
-            while (resultSet.next()) {
-                final Row resultRow = new Row();
-                for (String colName : searchedColumns) {
-                    resultRow.addColum(colName, resultSet.getObject(colName));
-                }
-                result.addRow(resultRow);
-            }
-
-            return result;
+            return executeStatement(searchedColumns, sqlStmt);
         } catch (SQLException e) {
             throw new SystemException(e);
         }
 
+    }
+    DataSet getAll(String tableName, Collection<String> searchedColumns) {
+        String sqlString = String.format("select %s from %s ",
+                StringUtils.concatStrings(searchedColumns, ", "), tableName);
+        LOGGER.debug("Wird ausgeführt: " + sqlString);
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement sqlStmt = connection.prepareStatement(sqlString)) {
+            return executeStatement(searchedColumns, sqlStmt);
+        } catch (SQLException e) {
+            throw new SystemException(e);
+        }
+
+    }
+
+    private DataSet executeStatement(Collection<String> searchedColumns, PreparedStatement sqlStmt) throws SQLException {
+        final ResultSet resultSet = sqlStmt.executeQuery();
+        DataSet result = new DataSet();
+        while (resultSet.next()) {
+            final Row resultRow = new Row();
+            for (String colName : searchedColumns) {
+                resultRow.addColum(colName, resultSet.getObject(colName));
+            }
+            result.addRow(resultRow);
+        }
+
+        return result;
     }
 
     void executeInsert(String tableName, DataSet dataSet) {

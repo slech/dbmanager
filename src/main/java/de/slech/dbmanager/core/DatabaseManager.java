@@ -153,6 +153,9 @@ public class DatabaseManager {
             if ("executeQuery".equals(method.getName())) {
                 return executeQuery();
             }
+            if ("getAll".equals(method.getName())) {
+                return getAll();
+            }
             if ("generateValuesFor".equals(method.getName())) {
                 generateValuesFor();
             } else if ("setDefaultValues".equals(method.getName())) {
@@ -291,8 +294,13 @@ public class DatabaseManager {
             return result;
         }
 
-
-
+        private DataSet getAll() {
+            checkState(OperationState.NONE);
+            final DataSet result = jdbcHelper.executeQuery(tableName, columnNames.values(),
+                    currentRow.getColumns());
+            resetDataSet();
+            return result;
+        }
 
         private void checkState(OperationState ... expected) {
             if (Arrays.stream(expected).noneMatch(operationState ->  operationState == currentOperation)) {

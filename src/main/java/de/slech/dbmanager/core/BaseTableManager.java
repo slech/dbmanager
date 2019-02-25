@@ -1,5 +1,7 @@
 package de.slech.dbmanager.core;
 
+import de.slech.dbmanager.data.DataSet;
+
 /**
  * Dieses Interface enthält die Operationen, um eine Interaktion mit der Tabelle zu starten, die durch den Typ Parameter
  * beschrieben wird
@@ -17,6 +19,12 @@ public interface BaseTableManager<T extends TableManager> {
      * @return das Interface, das die Tabelle beschreibt
      */
     T newQueryWhere();
+
+    /**
+     * Führt eine Query aus, die alle Datensätze zurückliefert.
+     * @return das Ergebnis der Query als Dataset
+     */
+    DataSet getAll();
 
     /**
      * ein DataSet soll für die Tabelle erstellt werden

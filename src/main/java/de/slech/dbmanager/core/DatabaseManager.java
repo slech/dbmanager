@@ -296,8 +296,7 @@ public class DatabaseManager {
 
         private DataSet getAll() {
             checkState(OperationState.NONE);
-            final DataSet result = jdbcHelper.executeQuery(tableName, columnNames.values(),
-                    currentRow.getColumns());
+            final DataSet result = jdbcHelper.getAll(tableName, columnNames.values());
             resetDataSet();
             return result;
         }
